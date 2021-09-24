@@ -1,6 +1,19 @@
 # Tools
 常用工具集合
 
+# Getting Started
+```groovy
+repositories {
+    //...
+    maven { url 'https://jitpack.io' }
+}
+}
+dependencies {
+    // ...
+    implementation 'com.github.iceBear67:tools:Tag'
+    // ...
+}
+```
 # Showcase
 ```java
 @Internal // 标注一个内部 API

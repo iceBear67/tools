@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group 'io.ib67'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        name = 'ProoooootocolLib'
+        url = "https://repo.dmulloy2.net/repository/public"
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    compileOnly 'com.google.code.gson:gson:2.8.6'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+}
+
+test {
+    useJUnitPlatform()
+}

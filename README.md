@@ -61,9 +61,7 @@ public class Showcase {
         
         // AccessibleField,支持通过 getter/setter，unsafe 获取/修改数据。
         AccessibleField f = new AccessibleField(XX.class,"myField");
-        
-        // Metrics
-        BukkitMetrics metrics = new BukkitMetrics(myJavaPlugin,114514);
+
         
         // Bukkit 环境配置好的 gson（支持 ItemStack 和 Location 的序列化），需要有 gson 和 ProtocolLib 在 classpath 里。
         Util.gsonForBukkit();

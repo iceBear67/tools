@@ -26,6 +26,9 @@ public class CatchingContext<T> {
     }
     return this;
   }
+  public boolean isFailed(){
+    return failure!=null;
+  }
   public CatchingContext<T> onSuccess(Consumer<T> consumer){
     if(result!=null){
       consumer.accept(result);

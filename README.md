@@ -28,16 +28,6 @@ public class Showcase {
         lazyLoader.getLocked(); // 同步获取，内部是 synchronized
         lazyLoader.get(null);
         
-        // 不使用 Levis 表达式和 Functional，判断null和返回数据
-        String result;
-        String msgMayNull = System.getProperty("message");
-        if(msgMayNull==null){
-            String body = HttpRequest.get("xxx").body();
-            result = body.split(" ")[1];
-        }else{
-            result = msgMayNull;
-        }
-        
         // 染色 String,未来可能会添加渐变等功能，然而大多数情况还是可以考虑直接replaceAll的
         String s = "" + new ColoredString("&baa&aaa").append("&bhi"); // or toString 
         
@@ -45,17 +35,18 @@ public class Showcase {
         Log.info("test"); // 控制台输出: [%插件名%] XXX，注意 relocate.
         
         // 在三元表达式内你可能需要通过一步以上的步骤来获取某些数据，这时候你可以使用 Functional
+        // 也可以直接 ((Supplier)()->{}).get() 但是我觉得比较丑
         result = msgMayNull!=null?msgMayNull:Functional.from(()->{
             String body = HttpRequest.get("xxx").body();
             return body.split(" ")[1];
         });
-        // 实际上你不应该让 Functional 来做这种无聊的事情，对于判空操作，使用 Optional 得到更优雅的写法：
+        // 实际上不应该让 Functional 来做这种无聊的事情，对于判空操作，使用 Optional 得到更优雅的写法：
         result = Optional.ofNullable(msgMayNull).orElseGet(()->{
             String body = HttpRequest.get("xxx").body();
             return body.split(" ")[1];
         });
 
-        // 停止使用 AbstractMap.SimpleEntry!
+        // DONT use AbstractMap.SimpleEntry!
         Pair<String,String> pair = Pair.of("a","b");
         System.out.println(pair.key);
         System.out.println(pair.value);

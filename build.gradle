@@ -32,7 +32,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
 }
+task install {
 
+}
+tasks.install.dependsOn(tasks.build)
 test {
     useJUnitPlatform()
 }

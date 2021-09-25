@@ -71,17 +71,24 @@ public class Showcase {
         conf.reloadConfig();
         conf.setConfFileName("..."); // optional
         Showcase showcase = conf.get();
-        System.out.println( showcase.myConfigColumn);
-    
+        System.out.println(showcase.myConfigColumn);
+
         String s = Util.readAll(InputStream); // 不解释
-        
+
         // I DONT CARE WHAT THE EXCEPTION IS
-        runCatching(()->{
+        boolean failed = runCatching(() -> {
             if (true) throw new NullPointerException("sbnc");
             return "";
-        }).onSuccess( t -> {
+        }).onSuccess(t -> {
             t.equals("");
-        }).onFailure(throwable -> {}).alsoPrintStack();
+        }).onFailure(throwable -> {
+        }).alsoPrintStack().isFailed();
+
+        // 错误报告收集器
+        ExceptionBottle.getDefaultBottle().collect(Throwable, Message);
+
+        // 配合 runCatching
+        runCatching(() -> {/*...*/}).recordError();
 
         // 用来对付泛型容器之间转换的 Box
         XX<String> xxa = Box.of(new XX<Integer>()).castTo(new XX<String>());

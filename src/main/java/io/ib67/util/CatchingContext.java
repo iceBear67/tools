@@ -25,6 +25,23 @@ public class CatchingContext<T> {
     return this;
   }
 
+  public CatchingContext<T> recordError(String bottleName, String message) {
+    if (failure != null) {
+      ExceptionBottle.getByModule(bottleName).collect(failure, message);
+    }
+    return this;
+  }
+
+  public CatchingContext<T> recordError(String bottleName) {
+    recordError(bottleName, "Nope");
+    return this;
+  }
+
+  public CatchingContext<T> recordError() {
+    recordError("GLOBAL");
+    return this;
+  }
+
   public boolean isFailed() {
     return failure != null;
   }

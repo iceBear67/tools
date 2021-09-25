@@ -84,7 +84,8 @@ public class Showcase {
         conf.setConfFileName("..."); // optional
         Showcase showcase = conf.get();
         System.out.println( showcase.myConfigColumn);
-
+    
+        String s = Util.readAll(InputStream); // 不解释
     }
 }
 

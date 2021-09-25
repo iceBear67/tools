@@ -5,7 +5,6 @@ import lombok.Builder;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Builder
 public class CatchingContext<T> {
   private Throwable failure;
   private T result;

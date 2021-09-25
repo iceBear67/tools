@@ -2,6 +2,7 @@ package io.ib67;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.ib67.util.Box;
 import io.ib67.util.CatchingContext;
 import io.ib67.util.serialization.bukkit.ItemStackSerializer;
 import io.ib67.util.serialization.bukkit.LocationSerializer;
@@ -11,19 +12,19 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.InputStream;
+import java.lang.instrument.Instrumentation;
 
 public class Util {
-    private static Gson gsonForBukkit;
+    private static Object gsonForBukkit;
+    private static final byte[] lock = new byte[0];
+    public static class A<T> {
+        public final int a = 1 ;
+    }
+
     private Util(){
-        runCatching(()->{
-            if (true) throw new NullPointerException("sbnc");
-            return "";
-        }).onSuccess( t -> {
-           t.equals("");
-        }).onFailure(throwable -> {}).alsoPrintStack();
     }
     public static Gson gsonForBukkit(){
-        synchronized (gsonForBukkit){
+        synchronized (lock){
             if(gsonForBukkit==null){
                 gsonForBukkit = new GsonBuilder()
                         .setPrettyPrinting()
@@ -33,7 +34,7 @@ public class Util {
 
             }
         }
-        return gsonForBukkit;
+        return (Gson) gsonForBukkit;
     }
     @SneakyThrows
     public static String readAll(InputStream stream){
@@ -55,7 +56,7 @@ public class Util {
     }
 
     @FunctionalInterface
-    interface ExceptedRunnable<T> {
+    public interface ExceptedRunnable<T> {
         T run() throws Throwable;
     }
 }

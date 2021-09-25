@@ -77,6 +77,14 @@ public class Showcase {
         System.out.println( showcase.myConfigColumn);
     
         String s = Util.readAll(InputStream); // 不解释
+        
+        // I DONT CARE WHAT THE EXCEPTION IS
+        runCatching(()->{
+            if (true) throw new NullPointerException("sbnc");
+            return "";
+        }).onSuccess( t -> {
+            t.equals("");
+        }).onFailure(throwable -> {}).alsoPrintStack();
     }
 }
 

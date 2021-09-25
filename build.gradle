@@ -1,9 +1,8 @@
 plugins {
     id 'java'
-    id 'maven'
 }
 
-group 'io.ib67'
+group 'com.github.iceBear67'
 version '0.0.2'
 
 repositories {

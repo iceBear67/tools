@@ -2,17 +2,15 @@ package io.ib67;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.ib67.util.Box;
 import io.ib67.util.CatchingContext;
 import io.ib67.util.serialization.bukkit.ItemStackSerializer;
 import io.ib67.util.serialization.bukkit.LocationSerializer;
-import jdk.nashorn.internal.objects.annotations.Function;
 import lombok.SneakyThrows;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.InputStream;
-import java.lang.instrument.Instrumentation;
 
 public class Util {
     private static Object gsonForBukkit;
@@ -25,20 +23,25 @@ public class Util {
             if(gsonForBukkit==null){
                 gsonForBukkit = new GsonBuilder()
                         .setPrettyPrinting()
-                        .registerTypeAdapter(Location.class,new LocationSerializer())
-                        .registerTypeAdapter(ItemStack.class,new ItemStackSerializer())
+                        .registerTypeAdapter(Location.class, new LocationSerializer())
+                        .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
                         .create();
 
             }
         }
         return (Gson) gsonForBukkit;
     }
+
+    public static Class<?> ofNMSClass(String clazzName) {
+        return runCatching(() -> Class.forName("net.minecraft.server." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3] + "." + clazzName)).getResult();
+    }
+
     @SneakyThrows
-    public static String readAll(InputStream stream){
+    public static String readAll(InputStream stream) {
         StringBuilder builder = new StringBuilder();
         byte[] buffer = new byte[4096];
         int i;
-        while((i = stream.read(buffer)) != -1){
+        while ((i = stream.read(buffer)) != -1) {
             builder.append(new String(buffer));
         }
         return builder.toString();

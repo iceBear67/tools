@@ -1,5 +1,5 @@
 # Tools
-常用工具集合
+个人常用工具集合
 
 # Getting Started
 ```groovy
@@ -45,8 +45,8 @@ public class Showcase {
             return body.split(" ")[1];
         });
 
-        // DONT use AbstractMap.SimpleEntry!
-        Pair<String,String> pair = Pair.of("a","b");
+        // 别再用 AbstractMap.SimpleEntry 了
+        Pair<String, String> pair = Pair.of("a", "b");
         System.out.println(pair.key);
         System.out.println(pair.value);
         Triple<Integer,Integer,Integer> trip = Triple.of(1,1,1);

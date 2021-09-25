@@ -17,9 +17,6 @@ import java.lang.instrument.Instrumentation;
 public class Util {
     private static Object gsonForBukkit;
     private static final byte[] lock = new byte[0];
-    public static class A<T> {
-        public final int a = 1 ;
-    }
 
     private Util(){
     }

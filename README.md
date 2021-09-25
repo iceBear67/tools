@@ -82,16 +82,18 @@ public class Showcase {
         }).onSuccess( t -> {
             t.equals("");
         }).onFailure(throwable -> {}).alsoPrintStack();
-        
+
         // 用来对付泛型容器之间转换的 Box
         XX<String> xxa = Box.of(new XX<Integer>()).castTo(new XX<String>());
-        
+
         // 冷却
         Cooldown cd = Cooldown.of(1000L); // 1s
         boolean succeed = cd.refresh(); //刷新
-         cd.isAvailable();
-         cd.waitFor(); // 自旋锁
+        cd.isAvailable();
+        cd.waitFor(); // 自旋锁
         cd.breaks(); // 立即可用
+
+        Util.ofNMSClass("PackeyPlayOutChat");
     }
 }
 

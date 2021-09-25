@@ -21,15 +21,13 @@ public class Showcase {
     private int myConfigColumn;
     @Since("0.0.1") // 标注API什么时候出现
     public void myAPI(){
-        // 常见的 Validation.
-        Validation.isNumber("0.1","It isn't a number!");
-        Validation.notNull(null,"absolutely null.");
-        Validation.checkTrue(true," message ");
-
         // 懒加载，自带缓存的 Supplier.
-        Lazy<String> lazyLoader = Lazy.by(()-> HttpRequest.get("https://sbnc.com/mySexySBNC.txt").body() ); // 对于J11以下提供了发起HTTP请求的方案（J11开始有标准库的现代HTTP CLIENT）
+        Lazy<?,String> lazyLoader = Lazy.by(()-> System.getProperty("a") );
+        Lazy<String,String> lazyFunction = Lazy.by( param -> {/* ... */} );
         lazyLoader.get();
         lazyLoader.getLocked(); // 同步获取，内部是 synchronized
+        lazyLoader.get(null);
+        
         // 不使用 Levis 表达式和 Functional，判断null和返回数据
         String result;
         String msgMayNull = System.getProperty("message");
@@ -39,7 +37,13 @@ public class Showcase {
         }else{
             result = msgMayNull;
         }
-
+        
+        // 染色 String,未来可能会添加渐变等功能，然而大多数情况还是可以考虑直接replaceAll的
+        String s = "" + new ColoredString("&baa&aaa").append("&bhi"); // or toString 
+        
+        // Logger.
+        Log.info("test"); // 控制台输出: [%插件名%] XXX，注意 relocate.
+        
         // 在三元表达式内你可能需要通过一步以上的步骤来获取某些数据，这时候你可以使用 Functional
         result = msgMayNull!=null?msgMayNull:Functional.from(()->{
             String body = HttpRequest.get("xxx").body();
@@ -60,7 +64,16 @@ public class Showcase {
 
         // Unsafe
         Unsafe.ensureClassInitialized(Showcase.class);
-
+        
+        // Eval
+        double d = Eval.eval("rand(0,200)+114514");
+        
+        // AccessibleField,支持通过 getter/setter，unsafe 获取/修改数据。
+        AccessibleField f = new AccessibleField(XX.class,"myField");
+        
+        // Metrics
+        BukkitMetrics metrics = new BukkitMetrics(myJavaPlugin,114514);
+        
         // Bukkit 环境配置好的 gson（支持 ItemStack 和 Location 的序列化），需要有 gson 和 ProtocolLib 在 classpath 里。
         Util.gsonForBukkit();
 
@@ -68,6 +81,7 @@ public class Showcase {
         SimpleConfig<Showcase> conf = new SimpleConfig<>(new File("."),Showcase.class);
         conf.saveDefault();
         conf.reloadConfig();
+        conf.setConfFileName("..."); // optional
         Showcase showcase = conf.get();
         System.out.println( showcase.myConfigColumn);
 

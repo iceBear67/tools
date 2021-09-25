@@ -1,4 +1,4 @@
-package io.ib67.util;
+package io.ib67.util.reflection;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;

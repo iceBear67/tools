@@ -35,26 +35,27 @@ public class Showcase {
         
         // 在三元表达式内你可能需要通过一步以上的步骤来获取某些数据，这时候你可以使用 Functional
         // 也可以直接 ((Supplier)()->{}).get() 但是我觉得比较丑
-        result = msgMayNull!=null?msgMayNull:Functional.from(()->{
+        result = msgMayNull != null ? msgMayNull : Functional.from(() -> {
             String body = HttpRequest.get("xxx").body();
             return body.split(" ")[1];
         });
         // 实际上不应该让 Functional 来做这种无聊的事情，对于判空操作，使用 Optional 得到更优雅的写法：
-        result = Optional.ofNullable(msgMayNull).orElseGet(()->{
+        result = Optional.ofNullable(msgMayNull).orElseGet(() -> {
             String body = HttpRequest.get("xxx").body();
             return body.split(" ")[1];
         });
-
+        // 或者用 nullOr
+        Util.nullOrElse(nullable, orElse);
         // 别再用 AbstractMap.SimpleEntry 了
         Pair<String, String> pair = Pair.of("a", "b");
         System.out.println(pair.key);
         System.out.println(pair.value);
-        Triple<Integer,Integer,Integer> trip = Triple.of(1,1,1);
-        Quadruple<String,String,String,String> quad = Quadruple.of("","","","");
+        Triple<Integer, Integer, Integer> trip = Triple.of(1, 1, 1);
+        Quadruple<String, String, String, String> quad = Quadruple.of("", "", "", "");
 
         // Unsafe
         Unsafe.ensureClassInitialized(Showcase.class);
-        
+
         // Eval
         double d = Eval.eval("rand(0,200)+114514");
         

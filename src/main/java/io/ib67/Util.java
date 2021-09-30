@@ -16,24 +16,31 @@ public class Util {
     private static Object gsonForBukkit;
     private static final byte[] lock = new byte[0];
 
-    private Util(){
+    private Util() {
     }
-    public static Gson gsonForBukkit(){
-        synchronized (lock){
-            if(gsonForBukkit==null){
-                gsonForBukkit = new GsonBuilder()
-                        .setPrettyPrinting()
-                        .registerTypeAdapter(Location.class, new LocationSerializer())
-                        .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
-                        .create();
 
+    public static <T> T nullOrElse(T t, T or) {
+        return t == null ? or : t;
+    }
+
+    public static class BukkitAPI {
+        public static Gson gsonForBukkit() {
+            synchronized (lock) {
+                if (gsonForBukkit == null) {
+                    gsonForBukkit = new GsonBuilder()
+                            .setPrettyPrinting()
+                            .registerTypeAdapter(Location.class, new LocationSerializer())
+                            .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
+                            .create();
+
+                }
             }
+            return (Gson) gsonForBukkit;
         }
-        return (Gson) gsonForBukkit;
-    }
 
-    public static Class<?> ofNMSClass(String clazzName) {
-        return runCatching(() -> Class.forName("net.minecraft.server." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3] + "." + clazzName)).getResult();
+        public static Class<?> ofNMSClass(String clazzName) {
+            return runCatching(() -> Class.forName("net.minecraft.server." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3] + "." + clazzName)).getResult();
+        }
     }
 
     @SneakyThrows

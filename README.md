@@ -60,9 +60,10 @@ public class Showcase {
         double d = Eval.eval("rand(0,200)+114514");
         
         // AccessibleField,支持通过 getter/setter，unsafe 获取/修改数据。
-        AccessibleField f = new AccessibleField(XX.class,"myField");
+        AccessibleField f = new AccessibleField(XX.class, "myField");
+        AccessibleClass claz = AccessibleClass.of(XX.class).field / method()
 
-        
+
         // Bukkit 环境配置好的 gson（支持 ItemStack 和 Location 的序列化），需要有 gson 和 ProtocolLib 在 classpath 里。
         Util.gsonForBukkit();
 

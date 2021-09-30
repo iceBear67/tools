@@ -53,14 +53,6 @@ public class Util {
         }
         return builder.toString();
     }
-    public static CatchingContext<Object> runCatching(Runnable runnable){
-        try{
-            runnable.run();
-            return new CatchingContext<>(new Object());
-        }catch(Throwable t){
-            return new CatchingContext<>(t);
-        }
-    }
     public static <T> CatchingContext<T> runCatching(ExceptedRunnable<T> runnable){
         try{
             return new CatchingContext<>(runnable.run());

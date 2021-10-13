@@ -4,10 +4,16 @@ import org.bukkit.ChatColor;
 
 public class ColoredString {
     private StringBuilder colored;
-    public ColoredString(String toBeColored){
+
+    public static String of(String legacyText) {
+        return new ColoredString(legacyText).toString();
+    }
+
+    public ColoredString(String toBeColored) {
         colored = new StringBuilder(toBeColored);
     }
-    public ColoredString append(String str){
+
+    public ColoredString append(String str) {
         colored.append(str);
         return this;
     }

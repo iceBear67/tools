@@ -9,6 +9,14 @@ public class ColoredString {
         return new ColoredString(legacyText).toString();
     }
 
+    public static String stripColors(String legacyText) {
+        return ChatColor.stripColor(of(legacyText));
+    }
+
+    public static ColoredString from(String legacyText) {
+        return new ColoredString(legacyText);
+    }
+
     public ColoredString(String toBeColored) {
         colored = new StringBuilder(toBeColored);
     }

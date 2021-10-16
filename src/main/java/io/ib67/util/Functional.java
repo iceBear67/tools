@@ -24,4 +24,8 @@ public class Functional {
     public static <T> Consumer<T> emptyConsumer() {
         return (Consumer<T>) EMPTY_CONSUMER;
     }
+
+    public static <T> Supplier<Consumer<T>> refEmptyConsumer() {
+        return Functional::emptyConsumer;
+    }
 }

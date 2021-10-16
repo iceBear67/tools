@@ -2,6 +2,7 @@ package io.ib67.util.serialization;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.ib67.util.Lazy;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -219,20 +220,26 @@ import java.nio.file.Path;
  * @param <C> 数据类
  */
 public class SimpleConfig<C> {
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Lazy<?, Gson> DEFAULT_SERIALIZER = Lazy.by(t -> new GsonBuilder().setPrettyPrinting().create());
     private final String root;
     private C configObj;
     @Setter
     @Getter
     private String configFileName = "config.json";
     private final Class<C> clazz;
+    private final Gson gson;
+
+    public SimpleConfig(File rootDir, Class<C> configClass) {
+        this(rootDir, configClass, DEFAULT_SERIALIZER.get());
+    }
 
     @SneakyThrows
-    public SimpleConfig(File rootDir, Class<C> configClass) {
+    public SimpleConfig(File rootDir, Class<C> configClass, Gson serializer) {
         rootDir.mkdirs();
         this.root = rootDir.getAbsolutePath();
         this.clazz = configClass;
         this.configObj = configClass.getDeclaredConstructor().newInstance();
+        gson = serializer;
         saveDefault();
         reloadConfig();
     }

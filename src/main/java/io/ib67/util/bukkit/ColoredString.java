@@ -26,8 +26,18 @@ public class ColoredString {
         return this;
     }
 
+    public ColoredString append(char str) {
+        colored.append(str);
+        return this;
+    }
+
+    public ColoredString append(int str) {
+        colored.append(str);
+        return this;
+    }
+
     @Override
     public String toString() {
-        return ChatColor.translateAlternateColorCodes('&',colored.toString());
+        return ChatColor.translateAlternateColorCodes('&', colored.toString());
     }
 }

@@ -28,4 +28,9 @@ public class Functional {
     public static <T> Supplier<Consumer<T>> refEmptyConsumer() {
         return Functional::emptyConsumer;
     }
+
+    public static <T> boolean outAndTrue(T t) {
+        System.out.println(t);
+        return true;
+    }
 }

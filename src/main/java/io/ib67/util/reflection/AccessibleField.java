@@ -22,9 +22,12 @@ public class AccessibleField<T> {
     private MethodHandle setter;
     private MethodHandle getter;
     private long offset;
+    private boolean isStatic;
+
     @SneakyThrows
-    public AccessibleField(Class<T> clazz, String fieldName){
-        this.clazz=clazz;
+    public AccessibleField(Class<T> clazz, String fieldName, boolean isStatic) {
+        this.isStatic = isStatic;
+        this.clazz = clazz;
         this.fieldName = fieldName;
         /**
          * Find Setters.
@@ -32,23 +35,30 @@ public class AccessibleField<T> {
         Field field = clazz.getDeclaredField(fieldName);
         Class<?> fieldType = field.getType();
         try {
-            setter = MethodHandles.lookup().findVirtual(clazz, "set" + uppercaseFirst(fieldName), MethodType.methodType(void.class, fieldType));
+            if (isStatic) {
+                setter = MethodHandles.lookup().findStatic(clazz, "set" + uppercaseFirst(fieldName), MethodType.methodType(void.class, fieldType));
+            } else {
+                setter = MethodHandles.lookup().findVirtual(clazz, "set" + uppercaseFirst(fieldName), MethodType.methodType(void.class, fieldType));
+            }
         }catch(Throwable excepted){
             // Maybe there isn't a setter method.
-            offset = Unsafe.objectFieldOffset(field);
+            offset = !isStatic ? Unsafe.objectFieldOffset(field) : Unsafe.staticFieldOffset(field);
         }
         try {
-            getter = MethodHandles.lookup().findVirtual(clazz, "get" + uppercaseFirst(fieldName), MethodType.methodType(fieldType));
+            if (isStatic) {
+                getter = MethodHandles.lookup().findStatic(clazz, "get" + uppercaseFirst(fieldName), MethodType.methodType(fieldType));
+            } else {
+                getter = MethodHandles.lookup().findVirtual(clazz, "get" + uppercaseFirst(fieldName), MethodType.methodType(fieldType));
+            }
         }catch(Throwable excepted){
             // Maybe there isn't a Getter method.
-            if(offset!=0L) offset = Unsafe.objectFieldOffset(field);
+            if (offset != 0L) offset = !isStatic ? Unsafe.objectFieldOffset(field) : Unsafe.staticFieldOffset(field);
         }
     }
 
     @SneakyThrows
     public void set(T t,Object data){
         //Object d = processors.stream().map(e->e.fromDatabase(fieldName,data)).filter(Objects::nonNull).findFirst().orElse(data);
-
         if(setter!=null){
             setter.invokeExact(t,data);
         }
@@ -57,7 +67,7 @@ public class AccessibleField<T> {
     }
     @SneakyThrows
     public Object get(T t){
-        Object data = getter==null?Unsafe.getObject(t,offset):getter.invokeExact();
+        Object data = getter == null ? (!isStatic ? Unsafe.getObject(t, offset) : Unsafe.getStatic(clazz, fieldName)) : getter.invokeExact();
         //return processors.stream().map(e->e.toDatabase(fieldName,data)).filter(Objects::nonNull).findFirst().orElse(data);
         return data;
     }

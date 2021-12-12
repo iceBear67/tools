@@ -12,7 +12,9 @@ public class AccessibleClass<T> {
     private static final MethodHandles.Lookup TRUSTED_LOOKUP;
 
     static {
-        TRUSTED_LOOKUP = (MethodHandles.Lookup) AccessibleClass.of(MethodHandles.Lookup.class).field("IMPL_LOOKUP").get(null);
+        Unsafe.ensureClassInitialized(MethodHandles.Lookup.class);
+        TRUSTED_LOOKUP = (MethodHandles.Lookup) new AccessibleField<>(MethodHandles.Lookup.class, "IMPL_LOOKUP", true).get(null);
+        System.out.println(TRUSTED_LOOKUP);
     }
 
     private Class<T> clazz;
@@ -26,8 +28,12 @@ public class AccessibleClass<T> {
         return new AccessibleClass<>(clazz);
     }
 
-    public AccessibleField<T> field(String fieldName) {
-        return fields.putIfAbsent(fieldName, new AccessibleField<>(clazz, fieldName));
+    public AccessibleField<T> virtualField(String fieldName) {
+        return fields.computeIfAbsent(fieldName, f -> new AccessibleField<>(clazz, fieldName, false));
+    }
+
+    public AccessibleField<T> staticField(String fieldName) {
+        return fields.computeIfAbsent(fieldName, f -> new AccessibleField<>(clazz, fieldName, true));
     }
 
     public MethodHandle method(String name, MethodType type) {

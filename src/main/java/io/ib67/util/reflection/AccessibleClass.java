@@ -14,9 +14,8 @@ public class AccessibleClass<T> {
     static {
         Unsafe.ensureClassInitialized(MethodHandles.Lookup.class);
         TRUSTED_LOOKUP = (MethodHandles.Lookup) new AccessibleField<>(MethodHandles.Lookup.class, "IMPL_LOOKUP", true).get(null);
-        System.out.println(TRUSTED_LOOKUP);
     }
-
+    
     private Class<T> clazz;
     private Map<String, AccessibleField<T>> fields = new HashMap<>();
 

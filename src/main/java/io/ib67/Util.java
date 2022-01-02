@@ -27,15 +27,19 @@ public class Util {
         public static Gson gsonForBukkit() {
             synchronized (lock) {
                 if (gsonForBukkit == null) {
-                    gsonForBukkit = new GsonBuilder()
-                            .setPrettyPrinting()
-                            .registerTypeAdapter(Location.class, new LocationSerializer())
-                            .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
+                    gsonForBukkit = gsonBuilderForBukkit()
                             .create();
 
                 }
             }
             return (Gson) gsonForBukkit;
+        }
+
+        public static GsonBuilder gsonBuilderForBukkit() {
+            return new GsonBuilder()
+                    .setPrettyPrinting()
+                    .registerTypeAdapter(Location.class, new LocationSerializer())
+                    .registerTypeAdapter(ItemStack.class, new ItemStackSerializer());
         }
 
         public static Class<?> ofNMSClass(String clazzName) {

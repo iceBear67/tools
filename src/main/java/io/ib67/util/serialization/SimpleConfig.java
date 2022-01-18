@@ -277,6 +277,10 @@ public class SimpleConfig<C> {
         this.configObj = c;
     }
 
+    public void setRaw(Object c) {
+        this.configObj = (C) c;
+    }
+
     /**
      * Reload MainConfig
      */

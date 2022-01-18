@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
 /**
- * Bundle object.
+ * tuple of 4 elements
  * Also see: {@link Pair} {@link Quadruple}
  *
  * @since 1.0

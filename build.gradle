@@ -26,6 +26,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     compileOnly 'com.google.code.gson:gson:2.8.6'
+    testRuntimeOnly 'com.google.code.gson:gson:2.8.6'
     compileOnly 'org.projectlombok:lombok:1.18.20'
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
     compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'

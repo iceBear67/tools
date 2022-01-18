@@ -1,7 +1,7 @@
 package io.ib67.util;
 
 /**
- * Bundle object.
+ * tuple
  * Also see: {@link Quadruple} {@link Triple}
  *
  * @since 1.0

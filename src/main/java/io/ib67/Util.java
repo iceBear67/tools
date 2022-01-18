@@ -23,27 +23,11 @@ public class Util {
         return t == null ? or : t;
     }
 
-    public static class BukkitAPI {
-        public static Gson gsonForBukkit() {
-            synchronized (lock) {
-                if (gsonForBukkit == null) {
-                    gsonForBukkit = gsonBuilderForBukkit()
-                            .create();
-
-                }
-            }
-            return (Gson) gsonForBukkit;
-        }
-
-        public static GsonBuilder gsonBuilderForBukkit() {
-            return new GsonBuilder()
-                    .setPrettyPrinting()
-                    .registerTypeAdapter(Location.class, new LocationSerializer())
-                    .registerTypeAdapter(ItemStack.class, new ItemStackSerializer());
-        }
-
-        public static Class<?> ofNMSClass(String clazzName) {
-            return runCatching(() -> Class.forName("net.minecraft.server." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3] + "." + clazzName)).getResult();
+    public static <T> CatchingContext<T> runCatching(ExceptedRunnable<T> runnable) {
+        try {
+            return new CatchingContext<>(runnable.run());
+        } catch (Throwable t) {
+            return new CatchingContext<>(t);
         }
     }
 
@@ -57,11 +41,26 @@ public class Util {
         }
         return builder.toString();
     }
-    public static <T> CatchingContext<T> runCatching(ExceptedRunnable<T> runnable){
-        try{
-            return new CatchingContext<>(runnable.run());
-        }catch(Throwable t){
-            return new CatchingContext<>(t);
+
+    public static class BukkitAPI {
+        public static Gson gsonForBukkit() {
+            if (gsonForBukkit == null) {
+                gsonForBukkit = gsonBuilderForBukkit()
+                        .create();
+
+            }
+            return (Gson) gsonForBukkit;
+        }
+
+        public static GsonBuilder gsonBuilderForBukkit() {
+            return new GsonBuilder()
+                    .setPrettyPrinting()
+                    .registerTypeAdapter(Location.class, new LocationSerializer())
+                    .registerTypeAdapter(ItemStack.class, new ItemStackSerializer());
+        }
+
+        public static Class<?> ofNMSClass(String clazzName) {
+            return runCatching(() -> Class.forName("net.minecraft.server." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3] + "." + clazzName)).getResult();
         }
     }
 

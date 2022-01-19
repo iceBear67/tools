@@ -35,7 +35,7 @@ public class ConfigFactory {
         Config config = configClass.getAnnotation(Config.class);
         if (config.staticMode()) {
             staticConfigClasses.add(configClass);
-            var path = rootDir.resolve(config.value());
+            Path path = rootDir.resolve(config.value());
             if (!Files.exists(path)) {
                 // stay default values.
                 Files.createFile(path);
@@ -45,7 +45,7 @@ public class ConfigFactory {
             initConfigClass(configClass, path);
             return null;
         } else {
-            var sc = configs.computeIfAbsent(configClass, c -> new SimpleConfig<C>(rootDir.toFile(), configClass, serializer));
+            SimpleConfig<?> sc = configs.computeIfAbsent(configClass, c -> new SimpleConfig<C>(rootDir.toFile(), configClass, serializer));
             sc.setConfigFileName(config.value());
             sc.saveDefault();
             sc.reloadConfig();
@@ -63,7 +63,7 @@ public class ConfigFactory {
         if (!staticConfigClasses.contains(configClass)) {
             throw new IllegalArgumentException("This @Config class has not initialized before");
         }
-        var config = configClass.getAnnotation(Config.class);
+        Config config = configClass.getAnnotation(Config.class);
         saveConfigClass(configClass, rootDir.resolve(config.value()));
     }
 
@@ -71,14 +71,14 @@ public class ConfigFactory {
         if (!configs.containsKey(config.getClass())) {
             throw new IllegalArgumentException("Config has not initialized before");
         }
-        var sc = configs.get(config.getClass());
+        SimpleConfig<?> sc = configs.get(config.getClass());
         sc.setRaw(config);
         sc.saveConfig();
     }
 
     @SneakyThrows
     private void saveConfigClass(Class<?> configClass, Path pathToConfig) {
-        var jo = new JsonObject();
+        JsonObject jo = new JsonObject();
         for (Field field : configClass.getDeclaredFields()) {
             field.setAccessible(true);
             jo.add(field.getName(), serializer.toJsonTree(field.get(null)));
@@ -88,7 +88,7 @@ public class ConfigFactory {
 
     @SneakyThrows
     private void initConfigClass(Class<?> configClass, Path pathToConfig) {
-        var jo = JSON_PARSER.parse(Files.readString(pathToConfig)).getAsJsonObject();
+        JsonObject jo = JSON_PARSER.parse(Files.readString(pathToConfig)).getAsJsonObject();
         for (Field field : configClass.getDeclaredFields()) {
             field.setAccessible(true);
             if (jo.has(field.getName())) {

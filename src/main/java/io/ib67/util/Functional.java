@@ -33,4 +33,15 @@ public class Functional {
         System.out.println(t);
         return true;
     }
+
+    public static <T> T also(T t, Function<T, T> function) {
+        return function.apply(t);
+    }
+
+    public static <T> T also(T t, Consumer<T> consumer) {
+        return also(t, t2 -> {
+            consumer.accept(t2);
+            return t2;
+        });
+    }
 }

@@ -19,7 +19,7 @@ public class Util {
     private Util() {
     }
 
-    public static <T> T nullOrElse(T t, T or) {
+    public static <T> T or(T t, T or) {
         return t == null ? or : t;
     }
 

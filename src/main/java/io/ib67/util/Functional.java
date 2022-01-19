@@ -34,12 +34,12 @@ public class Functional {
         return true;
     }
 
-    public static <T> T also(T t, Function<T, T> function) {
+    public static <T> T alsoMap(T t, Function<T, T> function) {
         return function.apply(t);
     }
 
     public static <T> T also(T t, Consumer<T> consumer) {
-        return also(t, t2 -> {
+        return alsoMap(t, t2 -> {
             consumer.accept(t2);
             return t2;
         });

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.ib67.Util;
 import io.ib67.util.serialization.SimpleConfig;
 import lombok.Builder;
 import lombok.SneakyThrows;
@@ -11,6 +12,7 @@ import lombok.SneakyThrows;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -21,7 +23,7 @@ public class ConfigFactory {
     @Builder.Default
     private final Gson serializer = new GsonBuilder().setPrettyPrinting().create();
     @Builder.Default
-    private final Path rootDir = Path.of(".");
+    private final Path rootDir = Paths.get(".");
     private final Map<Class<?>, SimpleConfig<?>> configs = new HashMap<>();
     private final Set<Class<?>> staticConfigClasses = new HashSet<>();
     private final JsonParser JSON_PARSER = new JsonParser(); // for the fucking compatibilities
@@ -83,12 +85,12 @@ public class ConfigFactory {
             field.setAccessible(true);
             jo.add(field.getName(), serializer.toJsonTree(field.get(null)));
         }
-        Files.writeString(pathToConfig, jo.toString());
+        Util.Java8Compat.writeString(pathToConfig, jo.toString());
     }
 
     @SneakyThrows
     private void initConfigClass(Class<?> configClass, Path pathToConfig) {
-        JsonObject jo = JSON_PARSER.parse(Files.readString(pathToConfig)).getAsJsonObject();
+        JsonObject jo = JSON_PARSER.parse(Util.Java8Compat.readString(pathToConfig)).getAsJsonObject();
         for (Field field : configClass.getDeclaredFields()) {
             field.setAccessible(true);
             if (jo.has(field.getName())) {

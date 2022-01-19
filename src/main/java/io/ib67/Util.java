@@ -10,7 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Path;
 
 public class Util {
     private static Object gsonForBukkit;
@@ -40,6 +41,26 @@ public class Util {
             builder.append(new String(buffer));
         }
         return builder.toString();
+    }
+
+    // fuck java 8
+    public static class Java8Compat {
+        @SneakyThrows
+        public static String readString(Path path) {
+            try (InputStream is = new FileInputStream(path.toFile())) {
+                return readAll(is);
+            }
+        }
+
+        @SneakyThrows
+        public static void writeString(Path path, String string) {
+            File file = path.toFile();
+            try (OutputStream os = new FileOutputStream(file)) {
+                os.write(string.getBytes());
+                os.flush();
+            }
+
+        }
     }
 
     public static class BukkitAPI {

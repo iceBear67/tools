@@ -66,7 +66,7 @@ public class ConfigFactory {
             throw new UnsupportedOperationException("Class must be annotated with @Config");
         }
         Config config = configClass.getAnnotation(Config.class);
-        var path = rootDir.resolve(config.value());
+        Path path = rootDir.resolve(config.value());
         if (Files.exists(path)) {
             return;
         }

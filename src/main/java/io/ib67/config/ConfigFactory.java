@@ -61,6 +61,18 @@ public class ConfigFactory {
         staticConfigClasses.forEach(this::save);
     }
 
+    public void saveDefault(Class<?> configClass) {
+        if (!configClass.isAnnotationPresent(Config.class)) {
+            throw new UnsupportedOperationException("Class must be annotated with @Config");
+        }
+        Config config = configClass.getAnnotation(Config.class);
+        var path = rootDir.resolve(config.value());
+        if (Files.exists(path)) {
+            return;
+        }
+        saveConfigClass(configClass, path);
+    }
+
     public void save(Class<?> configClass) {
         if (!staticConfigClasses.contains(configClass)) {
             throw new IllegalArgumentException("This @Config class has not initialized before");

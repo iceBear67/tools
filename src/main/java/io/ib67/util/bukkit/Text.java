@@ -24,6 +24,10 @@ public interface Text {
         return bk;
     }
 
+    static String stripColor(String s) {
+        return new BukkitText(s).stripAllColor().toString();
+    }
+
     static Text from(String configKey) {
         if (Util.ENV == EnvType.BUKKIT) {
             JavaPlugin plugin = Util.BukkitAPI.currentPlugin();

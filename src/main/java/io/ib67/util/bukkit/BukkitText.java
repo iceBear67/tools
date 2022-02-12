@@ -55,7 +55,7 @@ class BukkitText implements Text {
 
     @Override
     public Text join(CharSequence sequence) {
-        builder.append(ChatColor.translateAlternateColorCodes('&', sequence.toString()));
+        builder.append(ChatColor.RESET).append(ChatColor.translateAlternateColorCodes('&', sequence.toString())).append(ChatColor.RESET);
 
         return this;
     }
@@ -82,7 +82,7 @@ class BukkitText implements Text {
         String b = s;
         while (matcher.find()) {
             String key = matcher.group(1);
-            b = b.replaceAll(key, operators.stream().map(operator -> operator.apply(key)).filter(Objects::nonNull).findFirst().orElse(key));
+            b = b.replaceAll(key, ChatColor.RESET + operators.stream().map(operator -> operator.apply(key)).filter(Objects::nonNull).findFirst().orElse(key) + ChatColor.RESET);
         }
         return b;
     }

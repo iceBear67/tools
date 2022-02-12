@@ -2,6 +2,7 @@ package io.ib67.util.bukkit;
 
 import org.bukkit.ChatColor;
 
+@Deprecated
 public class ColoredString {
     private StringBuilder colored;
 

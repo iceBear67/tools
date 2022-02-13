@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 public class Lazy<T,R> {
     private Function<T,R> supplier;
     private R value;
+    private final byte[] lock = new byte[0];
     private Lazy(Function<T,R> supplier){
         this.supplier = supplier;
     }
@@ -15,15 +16,13 @@ public class Lazy<T,R> {
     public static <T,R> Lazy<T,R> by(Function<T,R> supplier){
         return new Lazy<>(supplier);
     }
-    public R getLocked(T param){
-        synchronized (value){
-            if(value!=null){
-                return value;
-            }else{
+    public R getLocked(T param) {
+        synchronized (lock) {
+            if (value == null) {
                 value = supplier.apply(param);
                 supplier = null;
-                return value;
             }
+            return value;
         }
     }
     public R getLocked(){

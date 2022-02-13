@@ -82,11 +82,10 @@ class BukkitText implements Text {
         String b = s;
         while (matcher.find()) {
             String key = matcher.group(1);
-            b = b.replaceAll(key, ChatColor.RESET + operators.stream().map(operator -> operator.apply(key)).filter(Objects::nonNull).findFirst().orElse(key) + ChatColor.RESET);
+            b = b.replaceAll(key, ChatColor.RESET + operators.stream().map(operator -> operator.apply(key.trim())).filter(Objects::nonNull).findFirst().orElse(key) + ChatColor.RESET);
         }
         return b;
     }
-
     @Override
     public String toString() {
         if (operators.size() > 0) {

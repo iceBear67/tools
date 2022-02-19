@@ -1,11 +1,14 @@
 package io.ib67.util;
 
+import lombok.EqualsAndHashCode;
+
 /**
  * tuple
  * Also see: {@link Quadruple} {@link Triple}
  *
  * @since 1.0
  */
+@EqualsAndHashCode
 public class Pair<K, V> {
     public K key;
     public V value;

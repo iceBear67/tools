@@ -19,4 +19,12 @@ public class Randomly {
     public static <T> Optional<T> pick(Collection<T> t) {
         return (Optional<T>) Optional.ofNullable(t.toArray()[ThreadLocalRandom.current().nextInt(t.size())]);
     }
+
+    public static int number(int bound) {
+        return ThreadLocalRandom.current().nextInt(bound);
+    }
+
+    public static int number() {
+        return number(9999);
+    }
 }

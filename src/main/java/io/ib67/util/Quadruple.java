@@ -2,6 +2,7 @@ package io.ib67.util;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 /**
  * tuple of 4 elements
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
  * @since 1.0
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode
 public class Quadruple<A, B, C, D> {
     public A A;
     public B B;

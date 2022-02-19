@@ -1,0 +1,7 @@
+name: Test
+main: ib67.Main
+version: 114-514
+api-version: 1.16
+commands:
+  test:
+    description: 111

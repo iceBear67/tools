@@ -2,11 +2,13 @@ package io.ib67.util.bukkit;
 
 import io.ib67.Util;
 import io.ib67.util.EnvType;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collection;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 public interface Text {
 
@@ -15,6 +17,10 @@ public interface Text {
             return new BukkitText(charSequence);
         }
         throw new UnsupportedOperationException("unsupported");
+    }
+
+    static String colored(String text) {
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
 
     static Text from(Collection<String> strings) {
@@ -37,14 +43,12 @@ public interface Text {
                 return new BukkitText("");
             }
             if (obj instanceof Collection) {
-                BukkitText bkText = new BukkitText("");
                 Collection<?> coll = (Collection<?>) obj;
                 if (!coll.stream().allMatch(e -> e instanceof String)) {
                     throw new IllegalArgumentException("collection must contain only strings");
                 }
                 Collection<String> colls = (Collection<String>) coll;
-                colls.forEach(bkText::join);
-                return bkText;
+                return new BukkitText(colls.stream().collect(Collectors.joining("\n")));
             }
             return new BukkitText(obj.toString());
 
@@ -52,6 +56,8 @@ public interface Text {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
+
+    Text line(CharSequence s);
 
     Text stripAllColor();
 
@@ -66,7 +72,7 @@ public interface Text {
 
     Text visit(UnaryOperator<String> placeholderOper);
 
-    Text placeholder(String k, Object v);
+    Text map(String k, Object v);
 
     Text join(CharSequence charSequence);
 

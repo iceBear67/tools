@@ -1,0 +1,6 @@
+messages:
+  - "&b {{ header }}"
+  - "&7 Wow you just used the &b {{ text }} &4!"
+  - "&b {{ footer }}"
+header: "====================="
+footer: "====================="

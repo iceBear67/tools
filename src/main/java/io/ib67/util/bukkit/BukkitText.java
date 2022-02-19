@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class BukkitText implements Text {
-    private static final Pattern TEMPLATE_PLACEHOLDER = Pattern.compile("\\{\\{.+}}");
+    private static final Pattern TEMPLATE_PLACEHOLDER = Pattern.compile("\\{\\{(.+)}}");
     private final List<UnaryOperator<String>> operators = new ArrayList<>();
     private StringBuilder builder;
 
@@ -19,7 +19,8 @@ class BukkitText implements Text {
     }
 
     BukkitText(CharSequence builder) {
-        this.builder = new StringBuilder(builder);
+        this.builder = new StringBuilder();
+        join(builder);
     }
 
     BukkitText(Text text) {
@@ -48,9 +49,9 @@ class BukkitText implements Text {
     }
 
     @Override
-    public Text placeholder(String k, Object v) {
+    public Text map(String k, Object v) {
         visit(z -> k.equals(z) ? v.toString() : null);
-        return null;
+        return this;
     }
 
     @Override
@@ -79,13 +80,20 @@ class BukkitText implements Text {
 
     private String setPlaceholders(String s) {
         Matcher matcher = TEMPLATE_PLACEHOLDER.matcher(s);
-        String b = s;
-        while (matcher.find()) {
-            String key = matcher.group(1);
-            b = b.replaceAll(key, ChatColor.RESET + operators.stream().map(operator -> operator.apply(key.trim())).filter(Objects::nonNull).findFirst().orElse(key) + ChatColor.RESET);
-        }
-        return b;
+        return matcher.replaceAll(t ->
+                operators.stream()
+                        .map(operator -> operator.apply(t.group(1).trim()))
+                        .filter(Objects::nonNull)
+                        .findFirst().map(Text::colored).orElse(t.group(1))
+                        + ChatColor.RESET);
     }
+
+    public Text line(CharSequence s) {
+        builder.append('\n');
+        join(s);
+        return this;
+    }
+
     @Override
     public String toString() {
         if (operators.size() > 0) {

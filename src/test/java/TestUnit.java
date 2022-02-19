@@ -26,7 +26,7 @@ public class TestUnit {
                 .trim()
                 .visit(e -> e.equals("time") ? Instant.now().toString() : null)
                 .join("blabla", "abababa")
-                .placeholder("luckyPlayer", Randomly.pick(Bukkit.getOnlinePlayers()).map(Player::getName))
+                .map("luckyPlayer", Randomly.pick(Bukkit.getOnlinePlayers()).map(Player::getName))
                 .toString();
         player.sendMessage(welcomeMessages);
 

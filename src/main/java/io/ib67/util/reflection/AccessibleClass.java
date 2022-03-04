@@ -35,6 +35,37 @@ public class AccessibleClass<T> {
         return fields.computeIfAbsent(fieldName, f -> new AccessibleField<>(clazz, fieldName, true));
     }
 
+    @SuppressWarnings("unchecked")
+    public T newInstance(Object... args) throws NoSuchMethodException {
+        if (args.length == 0) {
+            // find empty accessible valid constructor
+            try {
+                var con = clazz.getDeclaredConstructor();
+                con.setAccessible(true);
+                return con.newInstance();
+            } catch (Throwable ignored) {
+
+            }
+            // failed.
+            try {
+                return (T) Unsafe.getUnsafe().allocateInstance(clazz);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+                throw new NoSuchMethodException("No accessible constructor found");
+            }
+        }
+        try {
+            Class<?>[] paraTypes = new Class[args.length];
+            for (int i = 0; i < args.length; i++) {
+                paraTypes[i] = args[i].getClass();
+            }
+            var con = clazz.getDeclaredConstructor(paraTypes);
+            con.setAccessible(true);
+            return con.newInstance(args);
+        } catch (Throwable ignored) {
+            throw new NoSuchMethodException("No accessible constructor found for " + clazz.getName());
+        }
+    }
     public MethodHandle method(String name, MethodType type) {
         return Util.runCatching(() -> TRUSTED_LOOKUP.findVirtual(clazz, name, type)).getResult();
     }

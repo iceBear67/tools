@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.ib67.Util;
+import io.ib67.util.Util;
 import io.ib67.util.serialization.SimpleConfig;
 import lombok.Builder;
 import lombok.SneakyThrows;

@@ -1,11 +1,7 @@
-package io.ib67;
+package io.ib67.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.ib67.util.CatchingContext;
-import io.ib67.util.EnvType;
-import io.ib67.util.Functional;
-import io.ib67.util.Lazy;
 import io.ib67.util.bukkit.Log;
 import io.ib67.util.serialization.bukkit.ItemStackSerializer;
 import io.ib67.util.serialization.bukkit.LocationSerializer;

@@ -1,6 +1,6 @@
 package io.ib67.util.bukkit;
 
-import io.ib67.Util;
+import io.ib67.util.Util;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 

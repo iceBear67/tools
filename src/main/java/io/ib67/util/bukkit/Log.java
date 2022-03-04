@@ -1,7 +1,7 @@
 package io.ib67.util.bukkit;
 
-import io.ib67.Util;
 import io.ib67.util.Lazy;
+import io.ib67.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 

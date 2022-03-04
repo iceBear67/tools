@@ -1,7 +1,7 @@
 package io.ib67.util.bukkit;
 
-import io.ib67.Util;
 import io.ib67.util.EnvType;
+import io.ib67.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;

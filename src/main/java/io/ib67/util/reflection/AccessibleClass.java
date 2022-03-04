@@ -1,6 +1,6 @@
 package io.ib67.util.reflection;
 
-import io.ib67.Util;
+import io.ib67.util.Util;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
